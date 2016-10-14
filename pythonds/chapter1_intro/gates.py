@@ -287,4 +287,4 @@ def full_adder_8_bit(num1, num2):
 
     return result, int(result, 2)
 
-print full_adder_8_bit(120,13)
+print( full_adder_8_bit(120,13) )
