@@ -1,12 +1,8 @@
 
 class LogicGate:
 
-    def __init__(self, n):
-        self.label = n
+    def __init__(self):
         self.output = None
-
-    def getLabel(self):
-        return self.label
 
     def getOutput(self):
         self.output = self.performGateLogic()
@@ -15,8 +11,8 @@ class LogicGate:
 
 class BinaryGate(LogicGate):
 
-    def __init__(self, n, pinA=None, pinB=None):
-        LogicGate.__init__(self, n)
+    def __init__(self, pinA=None, pinB=None):
+        LogicGate.__init__(self)
 
         self.pinA = pinA
         self.pinB = pinB
@@ -49,8 +45,8 @@ class BinaryGate(LogicGate):
 
 class UnaryGate(LogicGate):
 
-    def __init__(self, n,  pin = None):
-        LogicGate.__init__(self, n)
+    def __init__(self,  pin = None):
+        LogicGate.__init__(self)
 
         self.pin = pin
 
@@ -69,8 +65,8 @@ class UnaryGate(LogicGate):
 
 class AndGate(BinaryGate):
 
-    def __init__(self, n, pinA=None, pinB=None):
-        BinaryGate.__init__(self, n, pinA, pinB)
+    def __init__(self, pinA=None, pinB=None):
+        BinaryGate.__init__(self, pinA, pinB)
 
     def performGateLogic(self):
         a = self.getPinA()
@@ -84,8 +80,8 @@ class AndGate(BinaryGate):
 
 class OrGate(BinaryGate):
 
-    def __init__(self, n, pinA=None, pinB=None):
-        BinaryGate.__init__(self, n, pinA, pinB)
+    def __init__(self, pinA=None, pinB=None):
+        BinaryGate.__init__(self, pinA, pinB)
 
     def performGateLogic(self):
         a = self.getPinA()
@@ -98,8 +94,8 @@ class OrGate(BinaryGate):
 
 class NotGate(UnaryGate):
 
-    def __init__(self, n, pin=None):
-        UnaryGate.__init__(self, n, pin)
+    def __init__(self, pin=None):
+        UnaryGate.__init__(self, pin)
 
     def performGateLogic(self):
         if self.getPin():
@@ -109,8 +105,8 @@ class NotGate(UnaryGate):
 
 class NorGate(BinaryGate):
 
-    def __init__(self, n, pinA=None, pinB=None):
-        BinaryGate.__init__(self, n, pinA, pinB)
+    def __init__(self, pinA=None, pinB=None):
+        BinaryGate.__init__(self, pinA, pinB)
 
     def performGateLogic(self):
         a = self.getPinA()
@@ -124,8 +120,8 @@ class NorGate(BinaryGate):
 
 class NandGate(BinaryGate):
 
-    def __init__(self, n, pinA=None, pinB=None):
-        BinaryGate.__init__(self, n, pinA, pinB)
+    def __init__(self, pinA=None, pinB=None):
+        BinaryGate.__init__(self, pinA, pinB)
 
     def performGateLogic(self):
         a = self.getPinA()
@@ -139,8 +135,8 @@ class NandGate(BinaryGate):
 
 class XorGate(BinaryGate):
 
-    def __init__(self, n, pinA=None, pinB=None):
-        BinaryGate.__init__(self, n, pinA, pinB)
+    def __init__(self, pinA=None, pinB=None):
+        BinaryGate.__init__(self, pinA, pinB)
 
     def performGateLogic(self):
         a = self.getPinA()
@@ -177,18 +173,18 @@ def check_eq(A, B, C, D):
     NOT( A and B ) and NOT (C and D)
     Make sure to use some of your new gates in the simulation.
     """
-    g1 = AndGate("G1", A, B)
-    g2 = AndGate("G2", C, D)
-    g3 = NorGate("G3")
+    g1 = AndGate(A, B)
+    g2 = AndGate(C, D)
+    g3 = NorGate()
 
     c1 = Connector(g1, g3)
     c2 = Connector(g2, g3)
 
     result1 = g3.getOutput()
 
-    g4 = NandGate("G4", A, B)
-    g5 = NandGate("G5", C, D)
-    g6 = AndGate("G6")
+    g4 = NandGate(A, B)
+    g5 = NandGate(C, D)
+    g6 = AndGate()
 
     c3 = Connector(g4,g6)
     c4 = Connector(g5,g6)
@@ -201,18 +197,94 @@ def check_eq(A, B, C, D):
 #print( check_eq(1,0,0,1) )
 
 
-def half_adder(A, B):
+class HalfAdder:
 
-    S = XorGate("G2", A, B).getOutput()
-    C = AndGate("G1", A, B).getOutput()
+    def __init__(self, A, B):
+        self.A = A
+        self.B = B
+
+    def getResult():
+        S = XorGate(A, B).getOutput()
+        C = AndGate(A, B).getOutput()
+
+        return S, C
+
+def half_adder(A, B):
+    """
+      x    y
+      |    |
+      |------------------\
+      |    |--------\    |
+    +--------+    +--------+
+    |  AND   |    |  XOR   |
+    +--------+    +--------+
+        |             |
+        c             s
+    """
+
+    S = XorGate(A, B).getOutput()
+    C = AndGate(A, B).getOutput()
 
     return S, C
 
-#print("Check half_adder truth table")
-#print( half_adder(0,0) == (0,0) )
-#print( half_adder(1,0) == (1,0) )
-#print( half_adder(0,1) == (1,0) )
-#print( half_adder(1,1) == (0,1) )
+"""
+print("Check half_adder truth table")
+print( half_adder(0,0) == (0,0) )
+print( half_adder(1,0) == (1,0) )
+print( half_adder(0,1) == (1,0) )
+print( half_adder(1,1) == (0,1) )
+"""
 
 def full_adder(A, B, Cin):
-    pass
+    """
+          x    y          c_i
+          |    |           |
+        +--------+         |
+      /-|   HA   |         |
+      | +--------+         |
+      |     |              |
+      |     `---------\    |
+      |               |    |
+      |             +--------+
+      |    /--------|   HA   |
+      |    |        +--------+
+    +--------+           |
+    |   OR   |           s
+    +--------+
+        |
+      c_out
+    """
+
+    S1, C1 = half_adder(A, B)
+    S, C2 = half_adder(Cin, S1)
+    Cout = OrGate(C1, C2).getOutput()
+
+    return Cout, S
+
+"""
+print( "Check full adder truth table" )
+print( full_adder(0, 0, 0) == (0, 0) )
+print( full_adder(0, 0, 1) == (0, 1) )
+print( full_adder(0, 1, 0) == (0, 1) )
+print( full_adder(0, 1, 1) == (1, 0) )
+print( full_adder(1, 0, 0) == (0, 1) )
+print( full_adder(1, 0, 1) == (1, 0) )
+print( full_adder(1, 1, 0) == (1, 0) )
+print( full_adder(1, 1, 1) == (1, 1) )
+"""
+
+
+def full_adder_8_bit(num1, num2):
+    num1 = bin(num1)[2:].zfill(8)
+    num2 = bin(num2)[2:].zfill(8)
+
+    R, C1 = half_adder(int(num1[-1]), int(num2[-1]))
+    result = str(R)
+
+    for i in reversed(range(0, 7)):
+        C1, R = full_adder(int(num1[i]), int(num2[i]), C1)
+        result = str(R) + result
+
+    return result, int(result, 2)
+
+print full_adder_8_bit(120,13)
