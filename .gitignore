@@ -4,6 +4,9 @@
 *.un~
 *.pyc
 
+# Edx courses
+edx/*
+
 # OS generated files #
 ######################
 .DS_Store
