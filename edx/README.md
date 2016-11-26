@@ -23,9 +23,9 @@ __memoization__ - сохранение результатов выполнени
 * nodes (vertices)
 * edges (arcs)
 
-◦ Undirected (graph)
-◦ Directed (digraph)
-◦ Unweighted or weighted
+* Undirected (graph)
+* Directed (digraph)
+* Unweighted or weighted
 
 Tree:
 * A directed graph in which each pair of nodes is connected by a single path
@@ -38,3 +38,7 @@ Representations:
 Shortest path:
 * Depth-first search (DFS)
 * Breadth-first search (BFS)
+
+
+Weighted Shortest Path
+* DFS
