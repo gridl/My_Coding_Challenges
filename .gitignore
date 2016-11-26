@@ -5,7 +5,7 @@
 *.pyc
 
 # Edx courses
-edx/*
+edx/MITx:6.00.2x/*
 
 # OS generated files #
 ######################
